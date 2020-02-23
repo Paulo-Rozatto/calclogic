@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Logic expressions</title>
+    <meta charset="utf8" />
+    <style>
+        html,
+        body {
+            margin: 0 auto;
+            padding: 0;
+            background-color: #AA9;
+            height: 100%;
+        }
+        
+        form {
+            height: 100%;
+            width: auto;
+        }
+        
+        fieldset {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 90%;
+            height: 50%;
+        }
+        
+        textarea {
+            display: block;
+            margin-left: auto;
+            margin-right: auto
+        }
+        
+        .container {
+            height: 100%;
+            padding: 2%;
+            margin-left: 10%;
+            margin-right: 10%;
+            background-color: #66777777;
+        }
+        
+        .text {
+            width: 90%;
+            height: 30%;
+            /* min-height: 100px; */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <fieldset>
+            <legend>Logic expressions</legend>
+
+            <label for="input">Input</label>
+            <textarea id="input" class="text" name="input" autofocus> </textarea><br/>
+
+            <label for="outut">Output</label>
+            <textarea id="output" class="text" name="output" disabled> </textarea><br/>
+
+            <button onclick="readPropositions()">Click me</button>
+        </fieldset>
+    </div>
+
+    <script type="text/javascript">
+        function readPropositions() {
+            const text = document.getElementById("input").value
+            const checkInvalidChars = /\w{2,}|[^\w\s\^|<>-]/
+
+            if (checkInvalidChars.test(text)) {
+                console.log("Invalid")
+            }
+            return text;
+        }
+    </script>
+</body>
