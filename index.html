@@ -65,7 +65,7 @@
     <script type="text/javascript">
         function readPropositions() {
             const text = document.getElementById("input").value
-            const checkInvalidChars = /\w{2,}|[^\w\s\^|<>-]/
+            const checkInvalidChars = /\w{2,}|[^\w\s\^|<>-]|\d/
 
             if (checkInvalidChars.test(text)) {
                 console.log("Invalid")
