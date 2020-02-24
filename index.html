@@ -63,14 +63,34 @@
     </div>
 
     <script type="text/javascript">
+        function validateInput(text) {
+            const checkInvalidChars = /\w{2,}|[^\w\s\^|<>-()]|\d/
+            const checkInvalidSymbols = /<(?!->)|-(?!>)|[.\n]>/
+
+            printOutput("")
+            if (checkInvalidChars.test(text)) {
+                printOutput("Ivalid character")
+                return false
+            }
+            if (checkInvalidSymbols.test(text)) {
+                printOutput("Ivalid symbol")
+                return false
+            }
+
+            return true
+        }
+
+        function printOutput(text) {
+            const output = document.getElementById("output")
+            output.value = text
+        }
+
         function readPropositions() {
             const text = document.getElementById("input").value
-            const checkInvalidChars = /\w{2,}|[^\w\s\^|<>-]|\d/
-
-            if (checkInvalidChars.test(text)) {
-                console.log("Invalid")
+            if (!validateInput(text)) {
+                return
             }
-            return text;
+
         }
     </script>
 </body>
