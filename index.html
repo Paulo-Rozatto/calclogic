@@ -64,8 +64,8 @@
 
     <script type="text/javascript">
         function validateInput(text) {
-            const checkInvalidChars = /\w{2,}|[^\w\s\^|<>-()]|\d/
-            const checkInvalidSymbols = /<(?!->)|-(?!>)|[.\n]>/
+            const checkInvalidChars = /\w{2,}|[^\w\s\(\)\^|<>-]|\d/
+            const checkInvalidSymbols = /<(?!->)|-(?!>)|[^-]>|^>/
 
             printOutput("")
             if (checkInvalidChars.test(text)) {
@@ -75,6 +75,18 @@
             if (checkInvalidSymbols.test(text)) {
                 printOutput("Ivalid symbol")
                 return false
+            }
+
+            const parentheses = text.match(/\(|\)/g)
+            let ctrl = 0;
+            for (let i = 0; i < parentheses.length; i++) {
+                if (parentheses[i] == "(") ctrl++;
+                else if (parentheses[i] == ")") ctrl--;
+                if (ctrl < 0) break;
+            }
+
+            if (ctrl != 0) {
+                return false;
             }
 
             return true
