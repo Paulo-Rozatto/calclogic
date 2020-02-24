@@ -79,10 +79,12 @@
 
             const parentheses = text.match(/\(|\)/g)
             let ctrl = 0;
-            for (let i = 0; i < parentheses.length; i++) {
-                if (parentheses[i] == "(") ctrl++;
-                else if (parentheses[i] == ")") ctrl--;
-                if (ctrl < 0) break;
+            if (parentheses) {
+                for (let i = 0; i < parentheses.length; i++) {
+                    if (parentheses[i] == "(") ctrl++;
+                    else if (parentheses[i] == ")") ctrl--;
+                    if (ctrl < 0) break;
+                }
             }
 
             if (ctrl != 0) {
