@@ -22,7 +22,7 @@
             margin-left: auto;
             margin-right: auto;
             width: 90%;
-            height: 50%;
+            height: 55%;
         }
         
         textarea {
@@ -41,7 +41,7 @@
         
         .text {
             width: 90%;
-            height: 30%;
+            height: 37%;
             /* min-height: 100px; */
         }
     </style>
@@ -55,44 +55,49 @@
             <label for="input">Input</label>
             <textarea id="input" class="text" name="input" autofocus> </textarea><br/>
 
-            <label for="outut">Output</label>
+            <label for="output">Output</label>
             <textarea id="output" class="text" name="output" disabled> </textarea><br/>
 
-            <button onclick="readPropositions()">Click me</button>
+            <button name="btn-truth" onclick="drawTruthTable()">Truth Table</button>
         </fieldset>
     </div>
 
     <script type="text/javascript">
         function validateInput(text) {
-            const checkInvalidChars = /\w{2,}|[^\w\s\(\)\^|<>-]|\d/
+            let isValid = true;
+            const checkInvalidChars = /\w{2,}|[^\w\s\(\)\^~|<>-]|\d/
             const checkInvalidSymbols = /<(?!->)|-(?!>)|[^-]>|^>/
+            const parentheses = text.match(/\(|\)/g)
+            let ctrl = 0;
+
+            //remove white spaces
+            text = text.match(/[^\s]/g).join('')
+
 
             printOutput("")
             if (checkInvalidChars.test(text)) {
                 printOutput("Ivalid character")
-                return false
-            }
-            if (checkInvalidSymbols.test(text)) {
+                isValid = false
+            } else if (checkInvalidSymbols.test(text)) {
                 printOutput("Ivalid symbol")
-                return false
-            }
-
-            const parentheses = text.match(/\(|\)/g)
-            let ctrl = 0;
-            if (parentheses) {
+                isValid = false
+            } else if (parentheses) {
                 for (let i = 0; i < parentheses.length; i++) {
                     if (parentheses[i] == "(") ctrl++;
                     else if (parentheses[i] == ")") ctrl--;
                     if (ctrl < 0) break;
                 }
+
+                if (ctrl != 0) {
+                    printOutput("Invalid parentheses")
+                    isValid = false;
+                }
             }
 
-            if (ctrl != 0) {
-                printOutput("Invalid parentheses")
-                return false;
+            return {
+                isValid,
+                text
             }
-
-            return true
         }
 
         function printOutput(text) {
@@ -100,12 +105,75 @@
             output.value = text
         }
 
-        function readPropositions() {
-            const text = document.getElementById("input").value
-            if (!validateInput(text)) {
-                return
+        function readPropositions(text) {
+            const propsKeys = []
+            const propositions = []
+            text = text.match(/\w/g)
+
+            for (let i = 0; i < text.length; i++) {
+                if (!propsKeys.includes(text[i])) {
+
+                    propsKeys.push(text[i])
+                }
+                propsKeys.sort()
+            }
+            for (let i = 0; i < propsKeys.length; i++) {
+                propositions[i] = propositionFactory(propsKeys[i], i, propsKeys.length)
             }
 
+            console.log(propsKeys)
+            console.log(propositions)
+
+            return propositions
+        }
+
+        function propositionFactory(key, order, numberProps) {
+            const values = []
+            let cont = 0
+            let value = true
+
+            for (let i = 0; i < Math.pow(2, numberProps); i++) {
+                if (cont >= Math.pow(2, (numberProps - order - 1))) {
+                    value = !value
+                    cont = 0
+                }
+                values[i] = value
+                cont++;
+            }
+            return {
+                key,
+                values
+            }
+        }
+
+        function drawTruthTable() {
+            let text = document.getElementById("input").value
+            const validation = validateInput(text)
+
+            if (!validation.isValid) {
+                return null
+            }
+
+            text = validation.text
+            const propositions = readPropositions(text)
+            let output = ""
+
+            console.log(propositions[0].key)
+
+            for (let i = 0; i < propositions.length; i++) {
+                output += `| ${propositions[i].key} `
+            }
+            output += '|\n'
+
+            for (let i = 0; i < propositions[0].values.length; i++) {
+                for (let j = 0; j < propositions.length; j++) {
+                    output += `| ${propositions[j].values[i] ? 'T' : 'F'} `
+                }
+                output += '|\n'
+            }
+
+            console.log(output)
+            printOutput(output)
         }
     </script>
 </body>
