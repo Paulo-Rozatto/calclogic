@@ -121,9 +121,6 @@
                 propositions[i] = propositionFactory(propsKeys[i], i, propsKeys.length)
             }
 
-            console.log(propsKeys)
-            console.log(propositions)
-
             return propositions
         }
 
@@ -158,8 +155,6 @@
             const propositions = readPropositions(text)
             let output = ""
 
-            console.log(propositions[0].key)
-
             for (let i = 0; i < propositions.length; i++) {
                 output += `| ${propositions[i].key} `
             }
@@ -172,7 +167,6 @@
                 output += '|\n'
             }
 
-            console.log(output)
             printOutput(output)
         }
     </script>
