@@ -32,6 +32,12 @@
             font-size: 1.3em;
         }
         
+        .buttons {
+            margin: 0 auto;
+            width: 70%;
+            text-align: center;
+        }
+        
         .container {
             height: 100%;
             padding: 2%;
@@ -55,12 +61,23 @@
 
             <label for="input">Input</label>
             <textarea id="input" class="text" name="input" autofocus> </textarea><br/>
+            <div class="buttons">
+                <button name="btn-negation" onclick="addTextInput('~')">Negation</button>
+                <button name="btn-conjunction" onclick="addTextInput('^ ')">Conjunction</button>
+                <button name="btn-disjunction" onclick="addTextInput('| ')">Disjunction</button>
+                <button name="btn-implication" onclick="addTextInput('-> ')">Implication</button>
+                <button name="btn-biconditional" onclick="addTextInput('<-> ')">Biconditional</button>
+                <button name="btn-clearInput" onclick="clearInput()">Clear Input</button>
+            </div>
 
             <label for="output">Output</label>
             <textarea id="output" class="text" name="output" readonly> </textarea><br/>
 
-            <button name="btn-truth" onclick="drawTruthTable()">Truth Table</button>
-            <button name="btn-copy" onclick="copyToClipboard()">Copy Output</button>
+            <div class="buttons">
+                <button name="btn-truth" onclick="drawTruthTable()">Truth Table</button>
+                <button name="btn-copy" onclick="copyToClipboard()">Copy Output</button>
+                <button name="btn-clearOutput" onclick="clearOutput()">Clear Output</button>
+            </div>
         </fieldset>
     </div>
 
@@ -274,14 +291,30 @@
         }
 
         function copyToClipboard() {
-            const copyText = document.getElementById("output");
+            const output = document.getElementById("output");
 
-            copyText.select();
-            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+            output.select();
+            output.setSelectionRange(0, 99999); /*For mobile devices*/
             document.getSelection().removeAllRanges()
-            copyText.selectionEnd = copyText.selectionStart
 
             document.execCommand("copy");
+            output.selectionEnd = output.selectionStart
+        }
+
+        function clearOutput() {
+            const output = document.getElementById("output");
+            output.value = ""
+        }
+
+        function addTextInput(text) {
+            const input = document.getElementById("input");
+            input.value += text
+            input.focus()
+        }
+
+        function clearInput() {
+            const output = document.getElementById("input");
+            output.value = ""
         }
     </script>
 </body>
