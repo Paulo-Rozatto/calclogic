@@ -3,7 +3,7 @@
 
 Goals:
 
-- Print truth table (x)
+- Print truth table (ok)
 
 - Check whether the expression is contradiction, tautology or contigency (x)
 
