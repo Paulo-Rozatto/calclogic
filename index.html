@@ -263,7 +263,7 @@
 
             for (let i = 0; i < propositions[0].values.length; i++) {
                 for (let j = 0; j < propositions.length; j++) {
-                    output += `| ${propositions[j].values[i] ? 'T' : 'F'} `
+                    output += `| ${propositions[j].values[i] ? 'T' : 'F'}${propositions[j].desc ? ' '.repeat(propositions[j].desc.length): ' '}`
                 }
                 output += `| ${result[i] ? 'T' : 'F'}\n`
             }
