@@ -28,7 +28,8 @@
         textarea {
             display: block;
             margin-left: auto;
-            margin-right: auto
+            margin-right: auto;
+            font-size: 1.3em;
         }
         
         .container {
@@ -56,9 +57,10 @@
             <textarea id="input" class="text" name="input" autofocus> </textarea><br/>
 
             <label for="output">Output</label>
-            <textarea id="output" class="text" name="output" disabled> </textarea><br/>
+            <textarea id="output" class="text" name="output" readonly> </textarea><br/>
 
             <button name="btn-truth" onclick="drawTruthTable()">Truth Table</button>
+            <button name="btn-copy" onclick="copyToClipboard()">Copy Output</button>
         </fieldset>
     </div>
 
@@ -269,6 +271,17 @@
             }
 
             printOutput(output)
+        }
+
+        function copyToClipboard() {
+            const copyText = document.getElementById("output");
+
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+            document.getSelection().removeAllRanges()
+            copyText.selectionEnd = copyText.selectionStart
+
+            document.execCommand("copy");
         }
     </script>
 </body>
