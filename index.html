@@ -153,16 +153,16 @@
             let cont = 0
             let value = true
 
-            if (arguments.length == 0) {
+            if (Array.isArray(arguments[0]) && arguments.length == 1) {
                 if (typeof propositionFactory.autoId == 'undefined') {
                     propositionFactory.autoId = 0
                 }
-                propositionFactory.autoId++
-                    return {
-                        key: propositionFactory.autoId,
-                        values: [],
-                        desc: ""
-                    }
+                propositionFactory.autoId += 1
+                return {
+                    key: propositionFactory.autoId,
+                    values: arguments[0],
+                    desc: ""
+                }
             }
 
             for (let i = 0; i < Math.pow(2, numberProps); i++) {
@@ -179,25 +179,31 @@
             }
         }
 
-        function findParentheses(text, propositions) {
-            const parenRegex = /\((.+)\)/
-            let parenMatch
+        function findParentheses(propositions, begin) {
+            if (!propositions) return null
+            if (!begin) begin = 0;
 
-            while ((parenMatch = text.match(parenRegex)) != null) {
-                let parenValue = findParentheses(parenMatch[1], propositions)
-                const newProp = propositionFactory()
+            for (let i = begin; i < Input.text.length; i++) {
+                if (Input.text[i] == '(') {
+                    let end = findParentheses(propositions, i + 1)
 
-                newProp.values = parenValue
-                newProp.desc = parenMatch[1]
-                propositions.push(newProp)
-                text = text.replace(parenMatch[0], newProp.key)
+                    const nestedProp = Input.text.slice(i, end)
+                    const nestedPropVal = composeProps(nestedProp, propositions)
+                    const newProp = propositionFactory(nestedPropVal)
+
+                    newProp.desc = nestedProp
+                    Input.text = Input.text.replace(nestedProp, newProp.key)
+                    propositions.push(newProp)
+                } else if (Input.text[i] == ')') {
+                    return i + 1
+                }
             }
-            return composeProps(text, propositions)
+
+            return composeProps(Input.text, propositions)
         }
 
         function composeProps(text, propositions) {
             let index
-            const negRegex = /~/g
 
             text = text.replace(/<->/g, "<")
             text = text.replace(/->/g, ">")
@@ -206,7 +212,9 @@
 
             for (let i = 0; i < text.length; i++) {
                 let prop = propositions.find(p => p.key == text[i])
-                if (prop) text[i] = [...prop.values]
+                if (prop) {
+                    text[i] = [...prop.values]
+                }
             }
 
             while ((index = text.indexOf("~")) != -1) {
@@ -257,8 +265,13 @@
             return text[0]
         }
 
+        function Input() {
+            Input.text = document.getElementById("input").value
+            return Input.text
+        }
+
         function drawTruthTable() {
-            let text = document.getElementById("input").value
+            let text = Input()
             const validation = validateInput(text)
 
             if (!validation.isValid) {
@@ -269,22 +282,24 @@
             const propositions = readPropositions(text)
             let output = ""
 
-            const result = findParentheses(text, propositions)
+            const result = findParentheses(propositions)
 
-            for (let i = 0; i < propositions.length; i++) {
-                if (propositions[i].desc) {
-                    output += `| ${propositions[i].desc} `
-                } else {
-                    output += `| ${propositions[i].key} `
-                }
-            }
-            output += `| ${text}\n`
+            // for (let i = 0; i < propositions.length; i++) {
+            //     if (propositions[i].desc) {
+            //         output += `| ${propositions[i].desc} `
+            //     } else {
+            //         output += `| ${propositions[i].key} `
+            //     }
+            // }
+            output += `| ${text} |\n`
+            output += '-'.repeat(text.length + 4) + '\n'
 
             for (let i = 0; i < propositions[0].values.length; i++) {
-                for (let j = 0; j < propositions.length; j++) {
-                    output += `| ${propositions[j].values[i] ? 'T' : 'F'}${propositions[j].desc ? ' '.repeat(propositions[j].desc.length): ' '}`
-                }
-                output += `| ${result[i] ? 'T' : 'F'}\n`
+                // for (let j = 0; j < propositions.length; j++) {
+                //     output += `| ${propositions[j].values[i] ? 'T' : 'F'}${propositions[j].desc ? ' '.repeat(propositions[j].desc.length): ' '}`
+                // }
+                output += `| ${result[i] ? 'T' : 'F'}${' '.repeat(text.length)}|\n`
+                output += '-'.repeat(text.length + 4) + '\n'
             }
 
             printOutput(output)
