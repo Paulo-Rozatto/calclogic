@@ -107,7 +107,9 @@ function findParentheses(propositions, begin) {
             const nestedPropVal = composeProps(nestedProp, propositions)
             const newProp = propositionFactory(nestedPropVal)
 
-            newProp.desc = nestedProp
+            newProp.desc = nestedProp.replace(/\d/g, (n) => {
+                return propositions.find(p => p.key == n).desc
+            })
             Input.text = Input.text.replace(nestedProp, newProp.key)
             propositions.push(newProp)
         } else if (Input.text[i] == ')') {
@@ -186,6 +188,38 @@ function Input() {
     return Input.text
 }
 
+function addTextInput(text) {
+    const input = document.getElementById("input");
+    if (text == 'backspace') {
+        input.value = input.value.slice(0, input.value.lastIndexOf())
+    } else input.value += text
+}
+
+function clearInput() {
+    const output = document.getElementById("input");
+    output.value = ""
+}
+
+function setOutput(nCols) {
+    const output = document.getElementById('output')
+    output.innerHTML = ""
+    output.className = `row justify-content-between align-items-center row-cols-${nCols ? nCols: 5}`
+}
+
+function addOutputCol(text) {
+    const div = document.createElement('div');
+
+    div.className = 'col outcol';
+
+    div.innerHTML = text;
+
+    document.getElementById('output').appendChild(div);
+}
+
+function deleteOutput() {
+    document.getElementById('output').innerHTML = ""
+}
+
 function drawTruthTable() {
     let text = Input()
     const validation = validateInput(text)
@@ -196,29 +230,26 @@ function drawTruthTable() {
 
     text = validation.text
     const propositions = readPropositions(text)
-    let output = ""
 
     const result = findParentheses(propositions)
 
-    // for (let i = 0; i < propositions.length; i++) {
-    //     if (propositions[i].desc) {
-    //         output += `| ${propositions[i].desc} `
-    //     } else {
-    //         output += `| ${propositions[i].key} `
-    //     }
-    // }
-    output += `| ${text} |\n`
-    output += '-'.repeat(text.length + 4) + '\n'
+    setOutput(propositions.length + 1)
+
+    for (let i = 0; i < propositions.length; i++) {
+        if (propositions[i].desc) {
+            addOutputCol(propositions[i].desc)
+        } else {
+            addOutputCol(propositions[i].key)
+        }
+    }
+    addOutputCol(text)
 
     for (let i = 0; i < propositions[0].values.length; i++) {
-        // for (let j = 0; j < propositions.length; j++) {
-        //     output += `| ${propositions[j].values[i] ? 'T' : 'F'}${propositions[j].desc ? ' '.repeat(propositions[j].desc.length): ' '}`
-        // }
-        output += `| ${result[i] ? 'T' : 'F'}${' '.repeat(text.length)}|\n`
-        output += '-'.repeat(text.length + 4) + '\n'
+        for (let j = 0; j < propositions.length; j++) {
+            addOutputCol(propositions[j].values[i] ? 'T' : 'F')
+        }
+        addOutputCol(result[i] ? 'T' : 'F')
     }
-
-    printOutput(output)
 }
 
 function copyToClipboard() {
@@ -230,20 +261,4 @@ function copyToClipboard() {
 
     document.execCommand("copy");
     output.selectionEnd = output.selectionStart
-}
-
-function clearOutput() {
-    const output = document.getElementById("output");
-    output.value = ""
-}
-
-function addTextInput(text) {
-    const input = document.getElementById("input");
-    input.value += text
-    input.focus()
-}
-
-function clearInput() {
-    const output = document.getElementById("input");
-    output.value = ""
 }

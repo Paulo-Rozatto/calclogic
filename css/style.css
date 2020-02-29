@@ -43,18 +43,26 @@ body {
 .container-fluid {
     background-color: #ffffef;
     height: 100%;
-    /* margin: 0 auto; */
-    /* box-shadow: -1px 0px 2px 2px #ddc; */
 }
 
 .blog-header {
     line-height: 1;
     border-bottom: 2px solid #eed;
     text-align: center;
+    margin-bottom: 2%;
 }
 
-header a {
+.blog-header a {
     font-size: 1.1em;
     text-decoration: none;
     color: black;
+}
+
+.outcol {
+    border: 1px #887 solid;
+    text-align: center;
+}
+
+#output {
+    background-color: #ddc;
 }

@@ -26,85 +26,88 @@
             </div>
         </header>
 
-        <br><br>
-
         <div class="jumbotron-fluid">
             <div class="calc container" id="calc">
                 <textarea class="form-control" id="input" rows="1"></textarea>
 
                 <div class="row  row-cols-5 keyboard justify-content-between align-items-center">
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('&Tilde;')">
                         &Tilde;
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('^')">
                         &and;
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('|')">
                         &or;
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('->')">
                         &rarr;
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('<->')">
                         &harr;
                     </div>
 
 
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('p')">
                         p
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('q')">
                         q
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('r')">
                         r
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('s')">
                         s
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('t')">
                         t
                     </div>
 
 
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('(')">
                         (
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput(')')">
                         )
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('&nbsp;')">
                         <img src="img/space.svg" alt="">
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput(';')">
                         ;
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="addTextInput('&#x23ce;')">
                         &#x23ce;
                     </div>
 
 
-                    <div class="col col key" onclick="">
+                    <div class="col key" onclick="drawTruthTable()">
                         <img src="img/grid.svg" alt="">
                     </div>
-                    <div class="col col key" onclick="">
+                    <div class="col key" onclick="">
                         &hArr;
                     </div>
                     <div class="col key" onclick="">
                         &#8866;
                     </div>
-                    <div class="col key" onclick="">
+                    <div class="col key" onclick="clearInput()">
                         <img src="img/clear.svg" alt="">
                     </div>
-                    <div class="col key" onclick="addRow()">
+                    <div class="col key" onclick="addTextInput('backspace')">
                         <img src="img/backspace.svg" alt="">
                     </div>
-
                 </div>
+
             </div>
         </div>
 
-        <script src="js/script.js"></script>
+        <div class="container">
+            <div id="output" class="row  output justify-content-between align-items-center"></div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
 </body>
 
 </html>
