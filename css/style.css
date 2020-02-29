@@ -1,0 +1,46 @@
+html,
+body {
+    margin: 0 auto;
+    padding: 0;
+    background-color: #AA9;
+    height: 100%;
+}
+
+form {
+    height: 100%;
+    width: auto;
+}
+
+fieldset {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    height: 55%;
+}
+
+textarea {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.3em;
+}
+
+.buttons {
+    margin: 0 auto;
+    width: 70%;
+    text-align: center;
+}
+
+.container {
+    height: 100%;
+    padding: 2%;
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: #66777777;
+}
+
+.text {
+    width: 90%;
+    height: 37%;
+}
