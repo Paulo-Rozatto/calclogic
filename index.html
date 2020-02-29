@@ -1,37 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="pt-br">
 
 <head>
-    <title>Logic expressions</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Calc Logic</title>
 </head>
 
 <body>
-    <div class="container">
-        <fieldset>
-            <legend>Logic expressions</legend>
-
-            <label for="input">Input</label>
-            <textarea id="input" class="text" name="input" autofocus> </textarea><br/>
-            <div class="buttons">
-                <button name="btn-negation" onclick="addTextInput('~')">Negation</button>
-                <button name="btn-conjunction" onclick="addTextInput('^ ')">Conjunction</button>
-                <button name="btn-disjunction" onclick="addTextInput('| ')">Disjunction</button>
-                <button name="btn-implication" onclick="addTextInput('-> ')">Implication</button>
-                <button name="btn-biconditional" onclick="addTextInput('<-> ')">Biconditional</button>
-                <button name="btn-clearInput" onclick="clearInput()">Clear Input</button>
+    <div class="container-fluid">
+        <header class="blog-header py-1">
+            <div class="row flex-nowrap justify-content-between align-items-center" id="header">
+                <div class="col">
+                    <a href="index.html">Home</a>
+                </div>
+                <div class="col">
+                    <h2>Calc Logic</h2>
+                </div>
+                <div class="col">
+                    <a href="#">Sobre</a>
+                </div>
             </div>
+        </header>
 
-            <label for="output">Output</label>
-            <textarea id="output" class="text" name="output" readonly> </textarea><br/>
+        <br><br>
 
-            <div class="buttons">
-                <button name="btn-truth" onclick="drawTruthTable()">Truth Table</button>
-                <button name="btn-copy" onclick="copyToClipboard()">Copy Output</button>
-                <button name="btn-clearOutput" onclick="clearOutput()">Clear Output</button>
+        <div class="jumbotron-fluid">
+            <div class="calc container" id="calc">
+                <textarea class="form-control" id="input" rows="1"></textarea>
+
+                <div class="row  row-cols-5 keyboard justify-content-between align-items-center">
+                    <div class="col key" onclick="">
+                        &Tilde;
+                    </div>
+                    <div class="col key" onclick="">
+                        &and;
+                    </div>
+                    <div class="col key" onclick="">
+                        &or;
+                    </div>
+                    <div class="col key" onclick="">
+                        &rarr;
+                    </div>
+                    <div class="col key" onclick="">
+                        &harr;
+                    </div>
+
+
+                    <div class="col key" onclick="">
+                        p
+                    </div>
+                    <div class="col key" onclick="">
+                        q
+                    </div>
+                    <div class="col key" onclick="">
+                        r
+                    </div>
+                    <div class="col key" onclick="">
+                        s
+                    </div>
+                    <div class="col key" onclick="">
+                        t
+                    </div>
+
+
+                    <div class="col key" onclick="">
+                        (
+                    </div>
+                    <div class="col key" onclick="">
+                        )
+                    </div>
+                    <div class="col key" onclick="">
+                        <img src="img/space.svg" alt="">
+                    </div>
+                    <div class="col key" onclick="">
+                        ;
+                    </div>
+                    <div class="col key" onclick="">
+                        &#x23ce;
+                    </div>
+
+
+                    <div class="col col key" onclick="">
+                        <img src="img/grid.svg" alt="">
+                    </div>
+                    <div class="col col key" onclick="">
+                        &hArr;
+                    </div>
+                    <div class="col key" onclick="">
+                        &#8866;
+                    </div>
+                    <div class="col key" onclick="">
+                        <img src="img/clear.svg" alt="">
+                    </div>
+                    <div class="col key" onclick="addRow()">
+                        <img src="img/backspace.svg" alt="">
+                    </div>
+
+                </div>
             </div>
-        </fieldset>
-    </div>
+        </div>
 
-    <script src="/js/script.js"></script>
+        <script src="js/script.js"></script>
 </body>
+
+</html>

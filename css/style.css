@@ -1,46 +1,60 @@
 html,
 body {
+    height: 100%;
+    padding: 0%;
     margin: 0 auto;
-    padding: 0;
-    background-color: #AA9;
-    height: 100%;
 }
 
-form {
-    height: 100%;
-    width: auto;
+.jumbotron-fluid {
+    height: 65%;
 }
 
-fieldset {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-    height: 55%;
+.calc {
+    background-color: #ddc !important;
+    padding: 2%;
+    padding-top: 4%;
+    height: 90%;
 }
 
-textarea {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.keyboard {
+    padding-top: 1%;
+    padding-left: 5%;
+    padding-right: 5%;
+    text-align: center;
+    height: 80%;
+}
+
+.key {
+    border: 1px #887 solid;
+    font-size: 1.2em;
+    background-color: #aa9;
+    height: 25%;
+}
+
+.key:hover {
     font-size: 1.3em;
+    background-color: #bba;
 }
 
-.buttons {
-    margin: 0 auto;
-    width: 70%;
+.screen {
+    padding-top: 2%;
+}
+
+.container-fluid {
+    background-color: #ffffef;
+    height: 100%;
+    /* margin: 0 auto; */
+    /* box-shadow: -1px 0px 2px 2px #ddc; */
+}
+
+.blog-header {
+    line-height: 1;
+    border-bottom: 2px solid #eed;
     text-align: center;
 }
 
-.container {
-    height: 100%;
-    padding: 2%;
-    margin-left: 10%;
-    margin-right: 10%;
-    background-color: #66777777;
-}
-
-.text {
-    width: 90%;
-    height: 37%;
+header a {
+    font-size: 1.1em;
+    text-decoration: none;
+    color: black;
 }
