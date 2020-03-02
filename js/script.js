@@ -278,3 +278,8 @@ function copyToClipboard() {
     document.execCommand("copy");
     output.selectionEnd = output.selectionStart
 }
+
+function workingOn() {
+    setOutput(1)
+    addOutputCol("Função ainda sendo implementada.")
+}
