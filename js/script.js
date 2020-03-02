@@ -190,9 +190,13 @@ function Input() {
 
 function addTextInput(text) {
     const input = document.getElementById("input");
+    const pos = input.selectionStart;
+
     if (text == 'backspace') {
-        input.value = input.value.slice(0, input.value.lastIndexOf())
-    } else input.value += text
+        input.value = input.value.slice(0, pos - 1) + input.value.slice(pos)
+    } else {
+        input.value = input.value.slice(0, pos) + text + input.value.slice(pos)
+    }
 }
 
 function clearInput() {
