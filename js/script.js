@@ -18,7 +18,9 @@ function validateInput(text) {
         } else {
             const chars = text.match(/\w/g)
             const symbols = text.match(/\^|\||<->|->|~+/g)
-            const openParentheses = text.match(/\(/)
+            let openParentheses = text.match(/\(/)
+
+            if (!openParentheses) openParentheses = 0;
 
             if (!chars || !symbols || (symbols.length > (chars.length + openParentheses.length))) {
                 errorText = "Sintaxe inválida"
