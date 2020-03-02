@@ -1,37 +1,47 @@
 function validateInput(text) {
-    let isValid = false;
+    let isValid = false
+    let errorText
     const checkInvalidChars = /\w{2,}|[^\w\s\(\)\^~|<>-]|\d/
     const checkInvalidSymbols = /<(?!->)|-(?!>)|[^-]>|^>/
-    const parentheses = text.match(/\(|\)/g)
+    const parentheses = /\(|\)/g
     let ctrl = 0;
 
-
-    printOutput("")
-
-    //remove white spaces
     text = text.match(/[^\s]/g)
+
     if (text) {
         text = text.join('')
         isValid = true
 
-        if (checkInvalidChars.test(text)) {
-            printOutput("Ivalid character")
+        if (checkInvalidChars.test(text) || checkInvalidSymbols.test(text)) {
+            errorText = "Caractere inválido"
             isValid = false
-        } else if (checkInvalidSymbols.test(text)) {
-            printOutput("Ivalid symbol")
-            isValid = false
-        } else if (parentheses) {
-            for (let i = 0; i < parentheses.length; i++) {
-                if (parentheses[i] == "(") ctrl++;
-                else if (parentheses[i] == ")") ctrl--;
-                if (ctrl < 0) break;
-            }
+        } else {
+            const chars = text.match(/\w/g)
+            const symbols = text.match(/\^|\||<->|->|~+/g)
+            const openParentheses = text.match(/\(/)
 
-            if (ctrl != 0) {
-                printOutput("Invalid parentheses")
-                isValid = false;
+            if (!chars || !symbols || (symbols.length > (chars.length + openParentheses.length))) {
+                errorText = "Sintaxe inválida"
+                isValid = false
+            } else
+            if (text.match(parentheses)) {
+                for (let i = 0; i < parentheses.length; i++) {
+                    if (parentheses[i] == "(") ctrl++;
+                    else if (parentheses[i] == ")") ctrl--;
+                    if (ctrl < 0) break;
+                }
+
+                if (ctrl != 0) {
+                    errorText = "Parenteses inválidos"
+                    isValid = false;
+                }
             }
         }
+    } else errorText = "Entrada vazia"
+
+    if (!isValid) {
+        setOutput(1)
+        addOutputCol(errorText)
     }
 
     return {
