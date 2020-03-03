@@ -6,6 +6,10 @@ function validateInput(text) {
     const parentheses = /\(|\)/g
     let ctrl = 0;
 
+    if (text.match('terra plana')) {
+        play()
+        return { isValid: false }
+    }
     text = text.match(/[^\s]/g)
 
     if (text) {
