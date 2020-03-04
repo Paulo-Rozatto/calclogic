@@ -6,7 +6,7 @@ function validateInput(text) {
     const parentheses = /\(|\)/g
     let ctrl = 0;
 
-    if (text.match('terra plana')) {
+    if (text.match(/terra plana/i)) {
         play()
         return { isValid: false }
     }
@@ -19,35 +19,25 @@ function validateInput(text) {
         if (checkInvalidChars.test(text) || checkInvalidSymbols.test(text)) {
             errorText = "Caractere inválido"
             isValid = false
-        } else {
-            const chars = text.match(/\w/g)
-            const symbols = text.match(/\^|\||<->|->|~+/g)
-            let openParentheses = text.match(/\(/)
+        } else if (!text.match(/\w/)) {
+            errorText = "Sintaxe inválida"
+            isValid = false
+        } else if (text.match(parentheses)) {
+            for (let i = 0; i < parentheses.length; i++) {
+                if (parentheses[i] == "(") ctrl++;
+                else if (parentheses[i] == ")") ctrl--;
+                if (ctrl < 0) break;
+            }
 
-            if (!openParentheses) openParentheses = 0;
-
-            if (!chars || !symbols || (symbols.length > (chars.length + openParentheses.length))) {
-                errorText = "Sintaxe inválida"
-                isValid = false
-            } else
-            if (text.match(parentheses)) {
-                for (let i = 0; i < parentheses.length; i++) {
-                    if (parentheses[i] == "(") ctrl++;
-                    else if (parentheses[i] == ")") ctrl--;
-                    if (ctrl < 0) break;
-                }
-
-                if (ctrl != 0) {
-                    errorText = "Parenteses inválidos"
-                    isValid = false;
-                }
+            if (ctrl != 0) {
+                errorText = "Parenteses inválidos"
+                isValid = false;
             }
         }
     } else errorText = "Entrada vazia"
 
     if (!isValid) {
-        setOutput(1)
-        addOutputCol(errorText)
+        errorCol(errorText)
     }
 
     return {
@@ -111,16 +101,18 @@ function propositionFactory(key, order, numberProps) {
     }
 }
 
-function findParentheses(propositions, begin) {
+function solveProposition(propositions, begin) {
     if (!propositions) return null
     if (!begin) begin = 0;
 
     for (let i = begin; i < Input.text.length; i++) {
         if (Input.text[i] == '(') {
-            let end = findParentheses(propositions, i + 1)
+            let end = solveProposition(propositions, i + 1)
+            if (!end) return null
 
             const nestedProp = Input.text.slice(i, end)
-            const nestedPropVal = composeProps(nestedProp, propositions)
+            const nestedPropVal = unifyProps(nestedProp, propositions)
+            if (!nestedPropVal) return null
             const newProp = propositionFactory(nestedPropVal)
 
             newProp.desc = nestedProp.replace(/\d/g, (n) => {
@@ -133,10 +125,10 @@ function findParentheses(propositions, begin) {
         }
     }
 
-    return composeProps(Input.text, propositions)
+    return unifyProps(Input.text, propositions)
 }
 
-function composeProps(text, propositions) {
+function unifyProps(text, propositions) {
     let index
 
     text = text.replace(/<->/g, "<")
@@ -153,46 +145,58 @@ function composeProps(text, propositions) {
 
     while ((index = text.indexOf("~")) != -1) {
 
-        for (let i = 0; i < text[index + 1].length; i++) {
-            text[index + 1][i] = !text[index + 1][i]
-        }
-        text.splice(index, 1)
-
+        if (text[index + 1]) {
+            if (text[index + 1] != "~") {
+                for (let i = 0; i < text[index + 1].length; i++) {
+                    text[index + 1][i] = !text[index + 1][i]
+                }
+                text.splice(index, 1)
+            } else {
+                text.splice(index, 2)
+            }
+        } else return null
     }
 
     while ((index = text.indexOf("^")) != -1) {
 
-        for (let i = 0; i < text[index + 1].length; i++) {
-            text[index + 1][i] = text[index + 1][i] && text[index - 1][i]
-        }
-        text.splice(index - 1, 2)
+        if (text[index + 1] && text[index - 1]) {
+            for (let i = 0; i < text[index + 1].length; i++) {
+                text[index + 1][i] = text[index + 1][i] && text[index - 1][i]
+            }
+            text.splice(index - 1, 2)
+        } else return null
 
     }
 
     while ((index = text.indexOf("|")) != -1) {
 
-        for (let i = 0; i < text[index + 1].length; i++) {
-            text[index + 1][i] = text[index + 1][i] || text[index - 1][i]
-        }
-        text.splice(index - 1, 2)
-
+        if (text[index + 1] && text[index - 1]) {
+            for (let i = 0; i < text[index + 1].length; i++) {
+                text[index + 1][i] = text[index + 1][i] || text[index - 1][i]
+            }
+            text.splice(index - 1, 2)
+        } else return null
     }
 
     while ((index = text.indexOf(">")) != -1) {
 
-        for (let i = 0; i < text[index + 1].length; i++) {
-            text[index + 1][i] = (!text[index - 1][i] || text[index + 1][i])
-        }
-        text.splice(index - 1, 2)
+        if (text[index + 1] && text[index - 1]) {
+            for (let i = 0; i < text[index + 1].length; i++) {
+                text[index + 1][i] = (!text[index - 1][i] || text[index + 1][i])
+            }
+            text.splice(index - 1, 2)
+        } else return null
 
     }
 
     while ((index = text.indexOf("<")) != -1) {
 
-        for (let i = 0; i < text[index + 1].length; i++) {
-            text[index + 1][i] = (!text[index + 1][i] || text[index - 1][i]) && (text[index + 1][i] || !text[index - 1][i])
-        }
-        text.splice(index - 1, 2)
+        if (text[index + 1] && text[index - 1]) {
+            for (let i = 0; i < text[index + 1].length; i++) {
+                text[index + 1][i] = (!text[index + 1][i] || text[index - 1][i]) && (text[index + 1][i] || !text[index - 1][i])
+            }
+            text.splice(index - 1, 2)
+        } else return null
 
     }
 
@@ -240,6 +244,11 @@ function deleteOutput() {
     document.getElementById('output').innerHTML = ""
 }
 
+function errorCol(text) {
+    setOutput(1)
+    addOutputCol(text)
+}
+
 function drawTruthTable() {
     let text = Input()
     const validation = validateInput(text)
@@ -251,7 +260,12 @@ function drawTruthTable() {
     text = validation.text
     const propositions = readPropositions(text)
 
-    const result = findParentheses(propositions)
+    const result = solveProposition(propositions)
+
+    if (!result) {
+        errorCol('Erro de sintaxe')
+        return null
+    }
 
     setOutput(propositions.length + 1)
 
