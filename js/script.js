@@ -284,6 +284,8 @@ function drawTruthTable() {
         }
         addOutputCol(result[i] ? 'T' : 'F')
     }
+
+    document.getElementById('output').scrollIntoView(true)
 }
 
 function copyToClipboard() {

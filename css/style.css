@@ -1,48 +1,7 @@
 html,
 body {
-    height: 100%;
     padding: 0%;
     margin: 0 auto;
-}
-
-.jumbotron-fluid {
-    height: 65%;
-}
-
-.calc {
-    background-color: #ddc !important;
-    padding: 2%;
-    padding-top: 4%;
-    height: 90%;
-}
-
-.keyboard {
-    padding-top: 1%;
-    padding-left: 5%;
-    padding-right: 5%;
-    text-align: center;
-    height: 80%;
-}
-
-.key {
-    border: 1px #887 solid;
-    font-size: 1.2em;
-    background-color: #aa9;
-    height: 25%;
-}
-
-.key:hover {
-    font-size: 1.3em;
-    background-color: #bba;
-}
-
-.screen {
-    padding-top: 2%;
-}
-
-.container-fluid {
-    background-color: #ffffef;
-    height: 100%;
 }
 
 .blog-header {
@@ -58,11 +17,60 @@ body {
     color: black;
 }
 
+.main {
+    background-color: #ffffef;
+}
+
+.calc {
+    background-color: #ddc !important;
+    padding: 2%;
+    padding-top: 7%;
+    border-radius: 2%;
+}
+
+@media (orientation: portrait) {
+    .calc {
+        height: 50vh;
+    }
+}
+
+@media (orientation: landscape) {
+    .calc {
+        height: 80vh;
+    }
+}
+
+.keyboard {
+    padding-top: 1%;
+    padding-left: 5%;
+    padding-right: 5%;
+    text-align: center;
+    height: 85%;
+}
+
+.key {
+    border: 1px #887 solid;
+    font-size: 1.2em;
+    background-color: #aa9;
+    height: 25%;
+}
+
+.key:hover {
+    font-size: 1.3em;
+    background-color: #bba;
+}
+
 .outcol {
     border: 1px #887 solid;
     text-align: center;
 }
 
 #output {
+    background-color: #ddc;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.instructions {
     background-color: #ddc;
 }

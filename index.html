@@ -26,7 +26,7 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="main container-fluid min-vh-100">
         <header class="blog-header py-1">
             <div class="row flex-nowrap justify-content-between align-items-center" id="header">
                 <div class="col">
@@ -41,84 +41,94 @@
             </div>
         </header>
 
-        <div class="jumbotron-fluid">
-            <div class="calc container" id="calc">
-                <textarea class="form-control" id="input" rows="1"></textarea>
+        <div class="calc container" id="calc">
+            <textarea class="form-control" id="input" rows="1"></textarea>
 
-                <div class="row  row-cols-5 keyboard justify-content-between align-items-center">
-                    <div class="col key" onclick="addTextInput('~')">
-                        &Tilde;
-                    </div>
-                    <div class="col key" onclick="addTextInput('^')">
-                        &and;
-                    </div>
-                    <div class="col key" onclick="addTextInput('|')">
-                        &or;
-                    </div>
-                    <div class="col key" onclick="addTextInput('->')">
-                        &rarr;
-                    </div>
-                    <div class="col key" onclick="addTextInput('<->')">
-                        &harr;
-                    </div>
-
-
-                    <div class="col key" onclick="addTextInput('p')">
-                        p
-                    </div>
-                    <div class="col key" onclick="addTextInput('q')">
-                        q
-                    </div>
-                    <div class="col key" onclick="addTextInput('r')">
-                        r
-                    </div>
-                    <div class="col key" onclick="addTextInput('s')">
-                        s
-                    </div>
-                    <div class="col key" onclick="addTextInput('t')">
-                        t
-                    </div>
-
-
-                    <div class="col key" onclick="addTextInput('(')">
-                        (
-                    </div>
-                    <div class="col key" onclick="addTextInput(')')">
-                        )
-                    </div>
-                    <div class="col key" onclick="addTextInput('&nbsp;')">
-                        <img src="img/space.svg">
-                    </div>
-                    <div class="col key" onclick="addTextInput(';')">
-                        ;
-                    </div>
-                    <div class="col key" onclick="addTextInput('\n')">
-                        &#x23ce;
-                    </div>
-
-
-                    <div class="col key" onclick="drawTruthTable()">
-                        <img src="img/grid.svg" alt="tabela verdade">
-                    </div>
-                    <div class="col key" onclick="workingOn()">
-                        &hArr;
-                    </div>
-                    <div class="col key" onclick="workingOn()">
-                        &#8866;
-                    </div>
-                    <div class="col key" onclick="clearInput()">
-                        <img src="img/clear.svg">
-                    </div>
-                    <div class="col key" onclick="addTextInput('backspace')">
-                        <img src="img/backspace.svg">
-                    </div>
+            <div class="row  row-cols-5 keyboard justify-content-between align-items-center">
+                <div class="col key" onclick="addTextInput('~')">
+                    &Tilde;
+                </div>
+                <div class="col key" onclick="addTextInput('^')">
+                    &and;
+                </div>
+                <div class="col key" onclick="addTextInput('|')">
+                    &or;
+                </div>
+                <div class="col key" onclick="addTextInput('->')">
+                    &rarr;
+                </div>
+                <div class="col key" onclick="addTextInput('<->')">
+                    &harr;
                 </div>
 
+
+                <div class="col key" onclick="addTextInput('p')">
+                    p
+                </div>
+                <div class="col key" onclick="addTextInput('q')">
+                    q
+                </div>
+                <div class="col key" onclick="addTextInput('r')">
+                    r
+                </div>
+                <div class="col key" onclick="addTextInput('s')">
+                    s
+                </div>
+                <div class="col key" onclick="addTextInput('t')">
+                    t
+                </div>
+
+
+                <div class="col key" onclick="addTextInput('(')">
+                    (
+                </div>
+                <div class="col key" onclick="addTextInput(')')">
+                    )
+                </div>
+                <div class="col key" onclick="addTextInput('&nbsp;')">
+                    <img src="img/space.svg">
+                </div>
+                <div class="col key" onclick="addTextInput(';')">
+                    ;
+                </div>
+                <div class="col key" onclick="addTextInput('\n')">
+                    &#x23ce;
+                </div>
+
+
+                <div class="col key" onclick="drawTruthTable()">
+                    <img src="img/grid.svg" alt="tabela verdade">
+                </div>
+                <div class="col key" onclick="workingOn()">
+                    &hArr;
+                </div>
+                <div class="col key" onclick="workingOn()">
+                    &#8866;
+                </div>
+                <div class="col key" onclick="clearInput()">
+                    <img src="img/clear.svg">
+                </div>
+                <div class="col key" onclick="addTextInput('backspace')">
+                    <img src="img/backspace.svg">
+                </div>
             </div>
+
         </div>
+
         <div class="container">
             <div id="output" class="row  output justify-content-between align-items-center"></div>
             <div id="player" style="display: none;"></div>
+        </div>
+
+        <div class="container instructions">
+            <h4>Instruções</h4>
+
+            <h5>Tabela verdade</h5>
+            <p>Insira a proposição e aperte <img src="img/grid.svg" alt="botão tabela verdade" /> para obter tabela verdade</p>
+            <h5>Equivalência</h5>
+            <p>Ainda não implementado &hArr;</p>
+            <h5>Argumento</h5>
+            <p>Ainda não implementado &#8866;</p>
         </div>
     </div>
 
