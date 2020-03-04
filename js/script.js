@@ -3,7 +3,8 @@ function validateInput(text) {
     let errorText
     const checkInvalidChars = /\w{2,}|[^\w\s\(\)\^~|<>-]|\d/
     const checkInvalidSymbols = /<(?!->)|-(?!>)|[^-]>|^>/
-    const parentheses = /\(|\)/g
+    const checkParentheses = /\(|\)/g
+    let parentheses
     let ctrl = 0;
 
     if (text.match(/terra plana/i)) {
@@ -22,7 +23,7 @@ function validateInput(text) {
         } else if (!text.match(/\w/)) {
             errorText = "Sintaxe inválida"
             isValid = false
-        } else if (text.match(parentheses)) {
+        } else if ((parentheses = text.match(checkParentheses)) !== null) {
             for (let i = 0; i < parentheses.length; i++) {
                 if (parentheses[i] == "(") ctrl++;
                 else if (parentheses[i] == ")") ctrl--;
