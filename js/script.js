@@ -1,50 +1,46 @@
 function validateInput(text) {
-    let isValid = false
-    let errorText
-    const checkInvalidChars = /\w{2,}|[^\w\s\(\)\^~|<>-]|\d/
-    const checkInvalidSymbols = /<(?!->)|-(?!>)|[^-]>|^>/
-    const checkParentheses = /\(|\)/g
-    let parentheses
-    let ctrl = 0;
+  let isValid = false;
+  let errorText;
+  const checkInvalidChars = /\w{2,}|[^\w\s\(\)\^~|<>-]|\d/;
+  const checkInvalidSymbols = /<(?!->)|-(?!>)|[^-]>|^>/;
+  const checkParentheses = /\(|\)/g;
+  let parentheses;
+  let ctrl = 0;
 
-    if (text.match(/terra plana/i)) {
-        play()
-        return { isValid: false }
+  text = text.match(/[^\s]/g);
+
+  if (text) {
+    text = text.join("");
+    isValid = true;
+
+    if (checkInvalidChars.test(text) || checkInvalidSymbols.test(text)) {
+      errorText = "Caractere inválido";
+      isValid = false;
+    } else if (!text.match(/\w/)) {
+      errorText = "Sintaxe inválida";
+      isValid = false;
+    } else if ((parentheses = text.match(checkParentheses)) !== null) {
+      for (let i = 0; i < parentheses.length; i++) {
+        if (parentheses[i] == "(") ctrl++;
+        else if (parentheses[i] == ")") ctrl--;
+        if (ctrl < 0) break;
+      }
+
+      if (ctrl != 0) {
+        errorText = "Parenteses inválidos";
+        isValid = false;
+      }
     }
-    text = text.match(/[^\s]/g)
+  } else errorText = "Entrada vazia";
 
-    if (text) {
-        text = text.join('')
-        isValid = true
+  if (!isValid) {
+    errorCol(errorText);
+  }
 
-        if (checkInvalidChars.test(text) || checkInvalidSymbols.test(text)) {
-            errorText = "Caractere inválido"
-            isValid = false
-        } else if (!text.match(/\w/)) {
-            errorText = "Sintaxe inválida"
-            isValid = false
-        } else if ((parentheses = text.match(checkParentheses)) !== null) {
-            for (let i = 0; i < parentheses.length; i++) {
-                if (parentheses[i] == "(") ctrl++;
-                else if (parentheses[i] == ")") ctrl--;
-                if (ctrl < 0) break;
-            }
-
-            if (ctrl != 0) {
-                errorText = "Parenteses inválidos"
-                isValid = false;
-            }
-        }
-    } else errorText = "Entrada vazia"
-
-    if (!isValid) {
-        errorCol(errorText)
-    }
-
-    return {
-        isValid,
-        text
-    }
+  return {
+    isValid,
+    text,
+  };
 }
 
 function printOutput(text) {
