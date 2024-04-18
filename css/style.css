@@ -1,76 +1,106 @@
-html,
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
 body {
-    padding: 0%;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-color: green;
+  min-height: 100vh;
 }
 
-.blog-header {
-    line-height: 1;
-    border-bottom: 2px solid #eed;
-    text-align: center;
-    margin-bottom: 2%;
+header {
+  background-color: blue;
+  height: 3.5rem;
+  padding: 10px;
 }
 
-.blog-header a {
-    font-size: 1.1em;
-    text-decoration: none;
-    color: black;
+main {
+  background-color: rebeccapurple;
+  padding: 10px;
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.main {
-    background-color: #ffffef;
+footer {
+  background-color: burlywood;
+  height: 3.5rem;
 }
 
-.calc {
-    background-color: #ddc !important;
-    padding: 2%;
-    padding-top: 7%;
-    border-radius: 2%;
+#calculator {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  flex: auto;
+  background: linear-gradient(45deg, #303030, #0f0f0f);
+  box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.5),
+    inset -5px -5px 5px rgba(80, 80, 80, 0.5),
+    inset 5px 5px 5px rgba(80, 80, 80, 0.7);
+  padding: 40px;
+  border: 1px solid gray;
+  border-radius: 5%;
+  width: 100%;
+  max-width: 600px;
+  gap: 20px;
+  font-size: 1.5rem;
+  text-shadow: -1px 1px 2px #0f0f0f;
 }
 
-@media (orientation: portrait) {
-    .calc {
-        height: 50vh;
-    }
+#display {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  min-height: 40px;
+  border-radius: 10px;
+  background-color: hsl(60, 56%, 87%);
 }
 
-@media (orientation: landscape) {
-    .calc {
-        height: 80vh;
-    }
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 30px;
+  color: white;
+  border-radius: 10px;
+  background: linear-gradient(90deg, gray, darkgrey);
+  cursor: pointer;
+  box-shadow: inset -5px -5px 5px rgba(0, 0, 0, 0.3),
+    inset 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+.button:hover {
+  background: linear-gradient(90deg, lightgrey, darkgrey);
 }
 
-.keyboard {
-    padding-top: 1%;
-    padding-left: 5%;
-    padding-right: 5%;
-    text-align: center;
-    height: 85%;
+#clear-button {
+  background: linear-gradient(90deg, #d00, #a00);
+  grid-column: 1 / span 2;
 }
 
-.key {
-    border: 1px #887 solid;
-    font-size: 1.2em;
-    background-color: #aa9;
-    height: 25%;
+#clear-button:hover {
+  background: linear-gradient(90deg, #f00, #c00);
 }
 
-.key:hover {
-    font-size: 1.3em;
-    background-color: #bba;
+#equals-button {
+  background: linear-gradient(90deg, #00d, #00a);
+  height: auto;
+  grid-column: 4;
+  grid-row: 5 / span 1;
 }
 
-.outcol {
-    border: 1px #887 solid;
-    text-align: center;
+#equals-button:hover {
+  background: linear-gradient(90deg, #00f, #00c);
 }
 
-#output {
-    background-color: #ddc;
-    margin-top: 5%;
-    margin-bottom: 5%;
+.operator-button {
+  background: linear-gradient(90deg, hsl(180, 100%, 40%), hsl(180, 100%, 25%));
 }
 
-.instructions {
-    background-color: #ddc;
+.operator-button:hover {
+  background: linear-gradient(90deg, hsl(180, 100%, 45%), hsl(180, 100%, 30%));
 }
