@@ -165,7 +165,9 @@ footer {
   background: linear-gradient(45deg, #303030, #0f0f0f);
   box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.5);
   padding: 10px;
-  border: 10px;
+  border: 80;
+  max-width: 100%;
+  overflow-x: auto;
 
   div {
     border: 1px solid gray;

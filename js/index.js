@@ -20,15 +20,24 @@ function clear() {
   output.style.display = "none";
 }
 
+function insertBracket() {
+  const text = displayText.innerText;
+  const opens = (text.match(/\(/g) || []).length;
+  const closes = (text.match(/\)/g) || []).length;
+
+  displayText.innerText += opens <= closes || text.endsWith("(") ? "(" : ")";
+  displayText.scrollLeft = displayText.scrollWidth;
+}
+
 function onEnter() {
   // temp replacements while main logic isn't refactored
   displayText.innerText = displayText.innerText
-    .replace("\u205f", "")
-    .replace("\u00ac", "~")
-    .replace("\u2227", "^")
-    .replace("\u2228", "|")
-    .replace("\u2192", "->")
-    .replace("\u2194", "<->");
+    .replaceAll("\u205f", "")
+    .replaceAll("\u00ac", "~")
+    .replaceAll("\u2227", "^")
+    .replaceAll("\u2228", "|")
+    .replaceAll("\u2192", "->")
+    .replaceAll("\u2194", "<->");
 
   drawTruthTable();
 }
@@ -38,5 +47,5 @@ document.querySelectorAll(".operator-button,.var-button").forEach((el) => {
 });
 document.querySelector("#clear-button").onclick = clear;
 document.querySelector("#backspace-button").onclick = backspace;
-document.querySelector("#brackets-button").onclick = null;
+document.querySelector("#brackets-button").onclick = insertBracket;
 document.querySelector("#equals-button").onclick = onEnter;
