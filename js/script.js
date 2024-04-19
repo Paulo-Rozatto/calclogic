@@ -1,50 +1,46 @@
 function validateInput(text) {
-    let isValid = false
-    let errorText
-    const checkInvalidChars = /\w{2,}|[^\w\s\(\)\^~|<>-]|\d/
-    const checkInvalidSymbols = /<(?!->)|-(?!>)|[^-]>|^>/
-    const checkParentheses = /\(|\)/g
-    let parentheses
-    let ctrl = 0;
+  let isValid = false;
+  let errorText;
+  const checkInvalidChars = /\w{2,}|[^\w\s\(\)\^~|<>-]|\d/;
+  const checkInvalidSymbols = /<(?!->)|-(?!>)|[^-]>|^>/;
+  const checkParentheses = /\(|\)/g;
+  let parentheses;
+  let ctrl = 0;
 
-    if (text.match(/terra plana/i)) {
-        play()
-        return { isValid: false }
+  text = text.match(/[^\s]/g);
+
+  if (text) {
+    text = text.join("");
+    isValid = true;
+
+    if (checkInvalidChars.test(text) || checkInvalidSymbols.test(text)) {
+      errorText = "Caractere inválido";
+      isValid = false;
+    } else if (!text.match(/\w/)) {
+      errorText = "Sintaxe inválida";
+      isValid = false;
+    } else if ((parentheses = text.match(checkParentheses)) !== null) {
+      for (let i = 0; i < parentheses.length; i++) {
+        if (parentheses[i] == "(") ctrl++;
+        else if (parentheses[i] == ")") ctrl--;
+        if (ctrl < 0) break;
+      }
+
+      if (ctrl != 0) {
+        errorText = "Parenteses inválidos";
+        isValid = false;
+      }
     }
-    text = text.match(/[^\s]/g)
+  } else errorText = "Entrada vazia";
 
-    if (text) {
-        text = text.join('')
-        isValid = true
+  if (!isValid) {
+    errorCol(errorText);
+  }
 
-        if (checkInvalidChars.test(text) || checkInvalidSymbols.test(text)) {
-            errorText = "Caractere inválido"
-            isValid = false
-        } else if (!text.match(/\w/)) {
-            errorText = "Sintaxe inválida"
-            isValid = false
-        } else if ((parentheses = text.match(checkParentheses)) !== null) {
-            for (let i = 0; i < parentheses.length; i++) {
-                if (parentheses[i] == "(") ctrl++;
-                else if (parentheses[i] == ")") ctrl--;
-                if (ctrl < 0) break;
-            }
-
-            if (ctrl != 0) {
-                errorText = "Parenteses inválidos"
-                isValid = false;
-            }
-        }
-    } else errorText = "Entrada vazia"
-
-    if (!isValid) {
-        errorCol(errorText)
-    }
-
-    return {
-        isValid,
-        text
-    }
+  return {
+    isValid,
+    text,
+  };
 }
 
 function printOutput(text) {
@@ -205,88 +201,88 @@ function unifyProps(text, propositions) {
 }
 
 function Input() {
-    Input.text = document.getElementById("input").value
-    return Input.text
+  Input.text = document.getElementById("display-text").innerText;
+  return Input.text;
 }
 
 function addTextInput(text) {
-    const input = document.getElementById("input");
-    const pos = input.selectionStart;
+  const input = document.getElementById("input");
+  const pos = input.selectionStart;
 
-    if (text == 'backspace') {
-        input.value = input.value.slice(0, pos - 1) + input.value.slice(pos)
-    } else {
-        input.value = input.value.slice(0, pos) + text + input.value.slice(pos)
-    }
+  if (text == "backspace") {
+    input.value = input.value.slice(0, pos - 1) + input.value.slice(pos);
+  } else {
+    input.value = input.value.slice(0, pos) + text + input.value.slice(pos);
+  }
 }
 
 function clearInput() {
-    const output = document.getElementById("input");
-    output.value = ""
+  const output = document.getElementById("input");
+  output.value = "";
 }
 
 function setOutput(nCols) {
-    const output = document.getElementById('output')
-    output.innerHTML = ""
-    output.className = `row justify-content-between align-items-center row-cols-${nCols ? nCols: 5}`
+  const output = document.getElementById("output");
+  output.innerHTML = "";
+  output.style.display = "grid";
+  output.style.gridTemplateColumns = `repeat(${nCols}, 1fr)`;
 }
 
 function addOutputCol(text) {
-    const div = document.createElement('div');
+  const div = document.createElement("div");
 
-    div.className = 'col outcol';
+  div.className = "col outcol";
 
-    div.innerHTML = text;
+  div.innerHTML = text;
 
-    document.getElementById('output').appendChild(div);
+  document.getElementById("output").appendChild(div);
 }
 
 function deleteOutput() {
-    document.getElementById('output').innerHTML = ""
+  document.getElementById("output").innerHTML = "";
 }
 
 function errorCol(text) {
-    setOutput(1)
-    addOutputCol(text)
+  document.querySelector("#display-message").innerText = text;
 }
 
-function drawTruthTable() {
-    let text = Input()
-    const validation = validateInput(text)
+export function drawTruthTable() {
+  let text = Input();
+  const validation = validateInput(text);
 
-    if (!validation.isValid) {
-        return null
+  if (!validation.isValid) {
+    return null;
+  }
+
+  text = validation.text;
+  const propositions = readPropositions(text);
+
+  const result = solveProposition(propositions);
+
+  if (!result) {
+    errorCol("Erro de sintaxe");
+    return null;
+  }
+
+  setOutput(propositions.length + 1);
+
+  for (let i = 0; i < propositions.length; i++) {
+    if (propositions[i].desc) {
+      addOutputCol(propositions[i].desc);
+    } else {
+      addOutputCol(propositions[i].key);
     }
+  }
+  addOutputCol(text);
 
-    text = validation.text
-    const propositions = readPropositions(text)
-
-    const result = solveProposition(propositions)
-
-    if (!result) {
-        errorCol('Erro de sintaxe')
-        return null
+  for (let i = 0; i < propositions[0].values.length; i++) {
+    for (let j = 0; j < propositions.length; j++) {
+      addOutputCol(propositions[j].values[i] ? "T" : "F");
     }
+    addOutputCol(result[i] ? "T" : "F");
+  }
 
-    setOutput(propositions.length + 1)
-
-    for (let i = 0; i < propositions.length; i++) {
-        if (propositions[i].desc) {
-            addOutputCol(propositions[i].desc)
-        } else {
-            addOutputCol(propositions[i].key)
-        }
-    }
-    addOutputCol(text)
-
-    for (let i = 0; i < propositions[0].values.length; i++) {
-        for (let j = 0; j < propositions.length; j++) {
-            addOutputCol(propositions[j].values[i] ? 'T' : 'F')
-        }
-        addOutputCol(result[i] ? 'T' : 'F')
-    }
-
-    document.getElementById('output').scrollIntoView(true)
+  document.getElementById("output").scrollIntoView(true);
 }
 
 function copyToClipboard() {
