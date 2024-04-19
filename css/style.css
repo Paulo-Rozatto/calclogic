@@ -22,7 +22,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: monospace;
+  font-family: Courier, monospace;
 }
 
 body {
@@ -52,6 +52,35 @@ footer {
   height: 3.5rem;
 }
 
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 30px;
+  color: whitesmoke;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--gray), var(--gray-dark));
+  cursor: pointer;
+  box-shadow: inset -5px -5px 5px rgba(0, 0, 0, 0.3),
+    inset 5px 5px 5px rgba(0, 0, 0, 0.3);
+  text-shadow: -1px 1px 2px #0f0f0f;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.button:hover {
+  background: linear-gradient(90deg, var(--gray-light), var(--gray));
+}
+
+.operator-button {
+  background: linear-gradient(90deg, var(--cyan), var(--cyan-dark));
+}
+
+.operator-button:hover {
+  background: linear-gradient(45deg, var(--cyan-light), var(--cyan));
+}
+
 #calculator {
   flex: auto;
   height: 100%;
@@ -68,37 +97,34 @@ footer {
   max-width: 600px;
   gap: 0.9rem;
   font-size: 1.5rem;
-  text-shadow: -1px 1px 2px #0f0f0f;
 }
 
 #display {
-  grid-column-start: 1;
-  grid-column-end: 5;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  min-height: 40px;
+  grid-column: 1 / span 4;
+  grid-row: 1 / span 2;
   border-radius: 10px;
   background-color: var(--beige);
-}
-
-.button {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  min-height: 30px;
-  color: whitesmoke;
-  border-radius: 10px;
-  background: linear-gradient(90deg, var(--gray), var(--gray-dark));
-  cursor: pointer;
-  box-shadow: inset -5px -5px 5px rgba(0, 0, 0, 0.3),
-    inset 5px 5px 5px rgba(0, 0, 0, 0.3);
-  user-select: none;
-  -webkit-user-select: none;
-}
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  font-size: 1.5rem;
+  text-wrap: nowrap;
+  padding-bottom: 10px;
 
-.button:hover {
-  background: linear-gradient(90deg, var(--gray-light), var(--gray));
+  #display-message {
+    flex: auto;
+    padding-right: 5px;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+  }
+
+  #display-text {
+    max-width: 100%;
+    outline: none;
+    overflow-x: auto;
+  }
 }
 
 #clear-button {
@@ -114,17 +140,9 @@ footer {
   background: linear-gradient(90deg, var(--violet), var(--violet-dark));
   height: auto;
   grid-column: 4;
-  grid-row: 5 / span 1;
+  grid-row: 6 / span 1;
 }
 
 #equals-button:hover {
   background: linear-gradient(90deg, var(--violet-light), var(--violet));
-}
-
-.operator-button {
-  background: linear-gradient(90deg, var(--cyan), var(--cyan-dark));
-}
-
-.operator-button:hover {
-  background: linear-gradient(45deg, var(--cyan-light), var(--cyan));
 }

@@ -9,35 +9,40 @@
       name="keywords"
       content="lógica proposicional,lógica matemática,tabela verdade,calculadora"
     />
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <header>Header</header>
     <main>
       <article id="calculator">
-        <section id="display"></section>
+        <section id="display">
+          <!-- Placking holding ThickSpace so div don't expand when placing text -->
+          <span id="display-message">&ThickSpace;</span>
+          <span id="display-text">&ThickSpace;</span>
+        </section>
 
         <section class="button" id="clear-button">C</section>
-        <section class="button operator-button">()</section>
+        <section class="button operator-button" id="brackets-button">()</section>
         <section class="button operator-button">&not;</section>
 
-        <section class="button">p</section>
-        <section class="button">q</section>
-        <section class="button">r</section>
+        <section class="button var-button">p</section>
+        <section class="button var-button">q</section>
+        <section class="button var-button">r</section>
         <section class="button operator-button">&and;</section>
 
-        <section class="button">s</section>
-        <section class="button">t</section>
-        <section class="button">u</section>
+        <section class="button var-button">s</section>
+        <section class="button var-button">t</section>
+        <section class="button var-button">u</section>
         <section class="button operator-button">&or;</section>
 
-        <section class="button">del</section>
+        <section class="button" id="backspace-button">del</section>
         <section class="button operator-button">&RightArrow;</section>
         <section class="button operator-button">&harr;</section>
-        
+
         <section class="button" id="equals-button">=</section>
       </article>
     </main>
     <footer>footer</footer>
+    <script type="module" src="js/index.js"></script>
   </body>
 </html>
