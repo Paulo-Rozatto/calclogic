@@ -16,6 +16,8 @@
   --gray-light: #bebebe;
 
   --beige: #f7e7ce;
+
+  --magenta-dark: hsl(289, 31%, 20%);
 }
 
 * {
@@ -28,18 +30,17 @@
 body {
   display: flex;
   flex-direction: column;
-  background-color: green;
   min-height: 100vh;
+  background: linear-gradient(0deg, var(--magenta-dark), black);
 }
 
-header {
-  background-color: blue;
+/* header {
+  background-color: #bebebe55;
   height: 3.5rem;
   padding: 10px;
-}
+} */
 
 main {
-  background-color: rebeccapurple;
   padding: 10px;
   flex: auto;
   display: flex;
@@ -48,8 +49,21 @@ main {
 }
 
 footer {
-  background-color: burlywood;
+  flex: auto;
+  background-color: #101010;
+  border-top: 1px solid white;
   height: 3.5rem;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  /* flex-direction: column; */
+  justify-content: space-between;
+  color: whitesmoke;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
 }
 
 .button {
@@ -82,8 +96,11 @@ footer {
 }
 
 #calculator {
-  flex: auto;
-  height: 100%;
+  width: 100%;
+  max-width: 600px;
+  height: 80vh;
+  min-height: 400px;
+  max-height: 800px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   background: linear-gradient(45deg, #303030, #0f0f0f);
@@ -93,8 +110,6 @@ footer {
   padding: 2.5rem;
   border: 1px solid gray;
   border-radius: 5%;
-  width: 100%;
-  max-width: 600px;
   gap: 0.9rem;
   font-size: 1.5rem;
 }
