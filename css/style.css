@@ -1,23 +1,21 @@
 :root {
-  --cyan: #16a3c7;
-  --cyan-dark: #326572;
-  --cyan-light: #8ed6e8;
+  --cyan: #3b7887;
+  --cyan-dark: #326571;
+  --cyan-light: #27a0be;
 
-  --red: #be2015;
-  --red-dark: #9c1a11;
-  --red-light: #c72316;
+  --red: #bc2015;
+  --red-dark: #9c1b11;
+  --red-light: #cf2317;
 
   --violet: #492b9c;
-  --violet-dark: #433272;
-  --violet-light: #4516c7;
+  --violet-dark: #3c2380;
+  --violet-light: #4516c5;
 
-  --gray: #a9a9a9;
-  --gray-dark: #686868;
-  --gray-light: #bebebe;
+  --gray: #4d4d4d;
+  --gray-dark: #292929;
+  --gray-light: #737373;
 
   --beige: #f7e7ce;
-
-  --magenta-dark: hsl(289, 31%, 20%);
 }
 
 * {
@@ -31,7 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(0deg, var(--magenta-dark), black);
+  background: linear-gradient(0deg, #1a1919, #353131);
 }
 
 main {
@@ -40,18 +38,17 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
 }
 
-footer {
-  flex: auto;
+header {
   background-color: #101010;
-  border-top: 1px solid white;
+  border-bottom: 1px solid white;
   height: 3.5rem;
   display: flex;
   align-items: center;
   padding: 1rem;
-  /* flex-direction: column; */
   justify-content: space-between;
   color: whitesmoke;
 
@@ -68,26 +65,25 @@ footer {
   height: 100%;
   min-height: 30px;
   color: whitesmoke;
-  border-radius: 10px;
-  background: linear-gradient(90deg, var(--gray), var(--gray-dark));
+  border-radius: 10%;
+  background: linear-gradient(270deg, var(--gray), var(--gray-dark));
   cursor: pointer;
-  box-shadow: inset -5px -5px 5px rgba(0, 0, 0, 0.3),
-    inset 5px 5px 5px rgba(0, 0, 0, 0.3);
-  text-shadow: -1px 1px 2px #0f0f0f;
+  box-shadow: inset -3px -3px 3px rgba(0, 0, 0, 0.5),
+    inset 3px 3px 5px rgba(0, 0, 0, 0.4);
   user-select: none;
   -webkit-user-select: none;
 }
 
 .button:hover {
-  background: linear-gradient(90deg, var(--gray-light), var(--gray));
+  background: linear-gradient(270deg, var(--gray-light), var(--gray-dark));
 }
 
 .operator-button {
-  background: linear-gradient(90deg, var(--cyan), var(--cyan-dark));
+  background: linear-gradient(270deg, var(--cyan), var(--cyan-dark));
 }
 
 .operator-button:hover {
-  background: linear-gradient(45deg, var(--cyan-light), var(--cyan));
+  background: linear-gradient(270deg, var(--cyan-light), var(--cyan));
 }
 
 #calculator {
@@ -99,9 +95,7 @@ footer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   background: linear-gradient(45deg, #303030, #0f0f0f);
-  box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.5),
-    inset -5px -5px 5px rgba(80, 80, 80, 0.5),
-    inset 5px 5px 5px rgba(80, 80, 80, 0.7);
+  box-shadow: inset -7px -7px 5px rgb(0, 0, 0), inset 7px 7px 5px rgb(0, 0, 0);
   padding: 2.5rem;
   border: 1px solid gray;
   border-radius: 5%;
@@ -120,11 +114,12 @@ footer {
   align-items: end;
   font-size: 1.5rem;
   text-wrap: nowrap;
-  padding-bottom: 10px;
+  padding: 10px;
+  box-shadow: inset -2px -2px 2px rgb(0, 0, 0), inset 3px 2px 2px rgb(0, 0, 0);
+  border: 1px solid gray;
 
   #display-message {
     flex: auto;
-    padding-right: 5px;
     max-width: 100%;
     text-overflow: ellipsis;
     overflow-x: hidden;
@@ -132,29 +127,28 @@ footer {
 
   #display-text {
     max-width: 100%;
-    outline: none;
     overflow-x: auto;
   }
 }
 
 #clear-button {
-  background: linear-gradient(90deg, var(--red), var(--red-dark));
+  background: linear-gradient(270deg, var(--red), var(--red-dark));
   grid-column: 1 / span 2;
 }
 
 #clear-button:hover {
-  background: linear-gradient(90deg, var(--red-light), var(--red));
+  background: linear-gradient(270deg, var(--red-light), var(--red));
 }
 
 #equals-button {
-  background: linear-gradient(90deg, var(--violet), var(--violet-dark));
+  background: linear-gradient(270deg, var(--violet), var(--violet-dark));
   height: auto;
   grid-column: 4;
   grid-row: 6 / span 1;
 }
 
 #equals-button:hover {
-  background: linear-gradient(90deg, var(--violet-light), var(--violet));
+  background: linear-gradient(270deg, var(--violet-light), var(--violet));
 }
 
 #output {
@@ -174,5 +168,4 @@ footer {
     padding: 10px;
     text-align: center;
   }
-
 }
