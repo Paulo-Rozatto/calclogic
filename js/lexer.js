@@ -10,7 +10,7 @@ E -> ( E )
 E -> id
 */
 
-const SYMBOLS = {
+export const SYMBOLS = {
   VAR: /[p-u]/,
   NOT: /\u00AC/,
   AND: /\u2227/,
@@ -21,7 +21,7 @@ const SYMBOLS = {
   RPR: /\)/, // right parethesis
 };
 
-function tokenize(text) {
+export function tokenize(text) {
   const input = text.trim().split("");
   const tokens = [];
   let erroFlag;
@@ -43,4 +43,3 @@ function tokenize(text) {
   }
   return tokens;
 }
-

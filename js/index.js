@@ -48,4 +48,4 @@ document.querySelectorAll(".operator-button,.var-button").forEach((el) => {
 document.querySelector("#clear-button").onclick = clear;
 document.querySelector("#backspace-button").onclick = backspace;
 document.querySelector("#brackets-button").onclick = insertBracket;
-document.querySelector("#equals-button").onclick = onEnter;
+// document.querySelector("#equals-button").onclick = onEnter;
