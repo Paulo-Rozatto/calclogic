@@ -10,12 +10,18 @@ E -> ( E )
 E -> id
 */
 
+export const VARS_SET = new Set();
+
+export function getVarsSet() {
+  return varsSet;
+}
+
 export const SYMBOLS = {
   VAR: /[p-u]/,
   NOT: /\u00AC/,
   AND: /\u2227/,
   OR: /\u2228/,
-  CON: /\u2192|/, // conditional
+  CON: /\u2192/, // conditional
   BIC: /\u2194/, // biconditional
   LPR: /\(/, // left parenthesis
   RPR: /\)/, // right parethesis
@@ -26,6 +32,8 @@ export function tokenize(text) {
   const tokens = [];
   let erroFlag;
 
+  VARS_SET.clear();
+
   for (const char of input) {
     erroFlag = true;
 
@@ -33,6 +41,11 @@ export function tokenize(text) {
       if (symbol.test(char)) {
         tokens.push({ symbol: key, char });
         erroFlag = false;
+
+        if (key == "VAR") {
+          VARS_SET.add(char);
+        }
+
         break;
       }
     }

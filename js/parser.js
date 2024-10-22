@@ -10,8 +10,7 @@ E -> ( E )
 E -> id
 */
 
-// import { tokenize } from "./lexer.js";
-import { tokenize } from "./lexer.js";
+import * as lexer from "./lexer.js";
 
 const displayText = document.querySelector("#display-text");
 document.querySelector("#equals-button").addEventListener("click", init);
@@ -21,13 +20,84 @@ let input = null;
 let index = null;
 let isAccept = null;
 
+let varMap = null;
+
+// idea: use int and bitwise operators instead of arrays
+// the problem would be that JS cast numbers to 32bit when doing bitwise operations
+
+function initVars() {
+  const size = 2 ** lexer.VARS_SET.size;
+  const vars = Array.from(lexer.VARS_SET);
+  vars.sort();
+  varMap = {};
+
+  for (let i = 0; i < vars.length; i++) {
+    const arr = new Array(size);
+
+    const blockSize = size / 2 ** i;
+    const split = blockSize / 2;
+
+    for (let j = 0; j < size; j++) {
+      arr[j] = j % blockSize < split;
+    }
+
+    varMap[vars[i]] = arr;
+  }
+}
+
+const BIOPS = {
+  AND: (left, right) => left && right,
+  OR: (left, right) => left || right,
+  CON: (left, right) => !left || right,
+  BIC: (left, right) => left === right,
+};
+
+function biop(op, left, right) {
+  console.log(op);
+  const result = new Array(left.length);
+  op = BIOPS[op];
+  for (let i = 0; i < left.length; i++) {
+    result[i] = op(left[i], right[i]);
+  }
+  return result;
+}
+
+function not(vars) {
+  const result = new Array(vars.length);
+  for (let i = 0; i < vars.length; i++) {
+    result[i] = !vars[i];
+  }
+  return result;
+}
+
+function evaluate(el) {
+  if (el.symbol == "VAR") {
+    console.log("here");
+    return varMap[el.char];
+  }
+
+  switch (el.children.length) {
+    case 1:
+      return varMap[el.children[0].char];
+    case 2:
+      return not(evaluate(el.children[1]));
+    case 3:
+      const [left, middle, right] = el.children;
+      return left.symbol == "LPR"
+        ? evaluate(middle)
+        : biop(middle.symbol, evaluate(left), evaluate(right));
+    default:
+      console.error("Operacao errada!", el);
+  }
+}
+
 function init() {
   index = 0;
   stack = [];
-  input = tokenize(displayText.innerText);
+  input = lexer.tokenize(displayText.innerText);
   input.push({ symbol: "$" });
 
-  console.log(input);
+  initVars();
 
   isAccept = false;
 
@@ -45,8 +115,9 @@ function init() {
   }
 
   if (isAccept) {
-    console.log("Good!")
+    console.log("Good!");
     console.log(stack);
+    console.log("oi", evaluate(stack[0]));
   }
 }
 
