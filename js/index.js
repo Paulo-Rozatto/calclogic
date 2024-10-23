@@ -1,4 +1,6 @@
-import { drawTruthTable } from "./script.js";
+import { solve } from "./solver.js";
+import { tokenize } from "./lexer.js";
+import { parse } from "./parser.js";
 
 const displayText = document.querySelector("#display-text");
 const displayMessage = document.querySelector("#display-message");
@@ -30,21 +32,53 @@ function insertBracket() {
 }
 
 function onEnter() {
-  // temp replacements while main logic isn't refactored
-  displayText.innerText = displayText.innerText
-    .replaceAll("\u205f", "")
-    .replaceAll("\u00ac", "~")
-    .replaceAll("\u2227", "^")
-    .replaceAll("\u2228", "|")
-    .replaceAll("\u2192", "->")
-    .replaceAll("\u2194", "<->");
+  const input = displayText.innerText;
 
-  drawTruthTable();
+  try {
+    const { tokens, vars } = tokenize(input);
+    const ast = parse(tokens);
+    const { result, varsMap } = solve(ast, vars);
+    buildTable(input, vars, varsMap, result);
+  } catch (e) {
+    displayMessage.innerText = e.message;
+    displayMessage.title = e.message;
+  }
 }
 
-document.querySelectorAll(".operator-button,.var-button").forEach((el) => {
-  el.onclick = onInput;
-});
+function addCol(fragment, text) {
+  const div = document.createElement("div");
+  div.className = "col outcol";
+  div.innerText = text;
+  fragment.append(div);
+}
+
+function buildTable(proposition, varsNames, varsMap, result) {
+  const fragment = new DocumentFragment();
+
+  // Header
+  for (const varName of varsNames) {
+    addCol(fragment, varName);
+  }
+  addCol(fragment, proposition);
+
+  // Body
+  for (let i = 0; i < result.length; i++) {
+    for (const varName of varsNames) {
+      addCol(fragment, varsMap[varName][i] ? "V" : "F");
+    }
+    addCol(fragment, result[i] ? "V" : "F");
+  }
+
+  output.innerHTML = "";
+  output.append(fragment);
+  output.style.gridTemplateColumns = `repeat(${varsNames.length + 1}, 1fr)`;
+  output.style.display = "grid";
+  output.scrollIntoView(true);
+}
+
+document
+  .querySelectorAll(".operator-button,.var-button")
+  .forEach((el) => (el.onclick = onInput));
 document.querySelector("#clear-button").onclick = clear;
 document.querySelector("#backspace-button").onclick = backspace;
 document.querySelector("#brackets-button").onclick = insertBracket;
