@@ -1,4 +1,6 @@
-import { drawTruthTable } from "./script.js";
+import { solve } from "./solver.js";
+import { tokenize } from "./lexer.js";
+import { parse } from "./parser.js";
 
 const displayText = document.querySelector("#display-text");
 const displayMessage = document.querySelector("#display-message");
@@ -30,22 +32,17 @@ function insertBracket() {
 }
 
 function onEnter() {
-  // temp replacements while main logic isn't refactored
-  displayText.innerText = displayText.innerText
-    .replaceAll("\u205f", "")
-    .replaceAll("\u00ac", "~")
-    .replaceAll("\u2227", "^")
-    .replaceAll("\u2228", "|")
-    .replaceAll("\u2192", "->")
-    .replaceAll("\u2194", "<->");
-
-  drawTruthTable();
+  const { tokens, varsSet } = tokenize(displayText.innerText);
+  console.log(tokens);
+  const ast = parse(tokens);
+  const result = solve(ast, varsSet);
+  console.log(result);
 }
 
-document.querySelectorAll(".operator-button,.var-button").forEach((el) => {
-  el.onclick = onInput;
-});
+document
+  .querySelectorAll(".operator-button,.var-button")
+  .forEach((el) => (el.onclick = onInput));
 document.querySelector("#clear-button").onclick = clear;
 document.querySelector("#backspace-button").onclick = backspace;
 document.querySelector("#brackets-button").onclick = insertBracket;
-// document.querySelector("#equals-button").onclick = onEnter;
+document.querySelector("#equals-button").onclick = onEnter;

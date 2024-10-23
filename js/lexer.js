@@ -10,11 +10,7 @@ E -> ( E )
 E -> id
 */
 
-export const VARS_SET = new Set();
-
-export function getVarsSet() {
-  return varsSet;
-}
+const VARS_SET = new Set();
 
 export const SYMBOLS = {
   VAR: /[p-u]/,
@@ -54,5 +50,5 @@ export function tokenize(text) {
       throw new Error(`Caractere invalido: ${char}`);
     }
   }
-  return tokens;
+  return { tokens, varsSet: VARS_SET };
 }

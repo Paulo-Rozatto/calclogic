@@ -1,139 +1,33 @@
 /*
 ** Ambiguous grammar **
-E' -> E
-E -> E <> E
-E -> E > E
-E -> E + E
-E -> E * E
-E -> ! E
-E -> ( E )
-E -> id
+0) E' -> E
+1) E -> E <> E
+2) E -> E > E
+3) E -> E + E
+4) E -> E * E
+5) E -> ! E
+6) E -> ( E )
+7) E -> id
 */
 
-import * as lexer from "./lexer.js";
-
-const displayText = document.querySelector("#display-text");
-document.querySelector("#equals-button").addEventListener("click", init);
-
 let stack = null;
-let input = null;
+let tokens = null;
 let index = null;
 let isAccept = null;
 
-let varMap = null;
-
-// idea: use int and bitwise operators instead of arrays
-// the problem would be that JS cast numbers to 32bit when doing bitwise operations
-
-function initVars() {
-  const size = 2 ** lexer.VARS_SET.size;
-  const vars = Array.from(lexer.VARS_SET);
-  vars.sort();
-  varMap = {};
-
-  for (let i = 0; i < vars.length; i++) {
-    const arr = new Array(size);
-
-    const blockSize = size / 2 ** i;
-    const split = blockSize / 2;
-
-    for (let j = 0; j < size; j++) {
-      arr[j] = j % blockSize < split;
-    }
-
-    varMap[vars[i]] = arr;
-  }
-}
-
-const BIOPS = {
-  AND: (left, right) => left && right,
-  OR: (left, right) => left || right,
-  CON: (left, right) => !left || right,
-  BIC: (left, right) => left === right,
-};
-
-function biop(op, left, right) {
-  console.log(op);
-  const result = new Array(left.length);
-  op = BIOPS[op];
-  for (let i = 0; i < left.length; i++) {
-    result[i] = op(left[i], right[i]);
-  }
-  return result;
-}
-
-function not(vars) {
-  const result = new Array(vars.length);
-  for (let i = 0; i < vars.length; i++) {
-    result[i] = !vars[i];
-  }
-  return result;
-}
-
-function evaluate(el) {
-  if (el.symbol == "VAR") {
-    console.log("here");
-    return varMap[el.char];
-  }
-
-  switch (el.children.length) {
-    case 1:
-      return varMap[el.children[0].char];
-    case 2:
-      return not(evaluate(el.children[1]));
-    case 3:
-      const [left, middle, right] = el.children;
-      return left.symbol == "LPR"
-        ? evaluate(middle)
-        : biop(middle.symbol, evaluate(left), evaluate(right));
-    default:
-      console.error("Operacao errada!", el);
-  }
-}
-
-function init() {
-  index = 0;
-  stack = [];
-  input = lexer.tokenize(displayText.innerText);
-  input.push({ symbol: "$" });
-
-  initVars();
-
-  isAccept = false;
-
-  let action;
-  let max = 100;
-  while (!isAccept && max > 0) {
-    action = SLR[input[0].symbol][index];
-
-    if (!action) {
-      console.error(`Error de parser: ${input[0].symbol}::${input[0].char}`);
-    }
-
-    action();
-    max--;
-  }
-
-  if (isAccept) {
-    console.log("Good!");
-    console.log(stack);
-    console.log("oi", evaluate(stack[0]));
-  }
-}
-
 function shift(id) {
-  const token = input.shift();
+  const token = tokens.shift();
   stack.push({ ...token, index });
   index = id;
 }
 
 function reduce(id) {
-  const exp = stack.splice(-R[id]);
+  const exp = stack.splice(-REDUCE_SIZE[id]);
   index = exp[0].index;
 
   stack.push({ symbol: "E", children: exp, index });
 
-  SLR["E"][index]();
+  SLR_TABLE["E"][index]();
 }
 
 function goto(id) {
@@ -161,9 +55,9 @@ const reduce5 = () => reduce(5);
 const reduce6 = () => reduce(6);
 const reduce7 = () => reduce(7);
 
-const R = [0, 3, 3, 3, 3, 2, 3, 1];
+const REDUCE_SIZE = [0, 3, 3, 3, 3, 2, 3, 1];
 
-const SLR = {
+const SLR_TABLE = {
   VAR: {
     0: shift4,
     2: shift4,
@@ -265,3 +159,34 @@ const SLR = {
     8: () => goto(14),
   },
 };
+
+// idea: use int and bitwise operators instead of arrays
+// the problem would be that JS cast numbers to 32bit when doing bitwise operations
+
+export function parse(input) {
+  index = 0;
+  stack = [];
+  tokens = [...input];
+  tokens.push({ symbol: "$" });
+
+  isAccept = false;
+
+  let action;
+  let max = 100;
+  while (!isAccept && max > 0) {
+    action = SLR_TABLE[tokens[0].symbol][index];
+
+    if (!action) {
+      console.error(`Error de parser: ${tokens[0].symbol}::${tokens[0].char}`);
+    }
+
+    action();
+    max--;
+  }
+
+  if (isAccept) {
+    return stack;
+  }
+
+  return [];
+}
