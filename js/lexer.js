@@ -27,6 +27,7 @@ export function tokenize(text) {
   const input = text.trim().split("");
   const tokens = [];
   let erroFlag;
+  let col = 1;
 
   VARS_SET.clear();
 
@@ -35,19 +36,20 @@ export function tokenize(text) {
 
     for (const [key, symbol] of Object.entries(SYMBOLS)) {
       if (symbol.test(char)) {
-        tokens.push({ symbol: key, char });
+        tokens.push({ symbol: key, char, col });
         erroFlag = false;
 
         if (key == "VAR") {
           VARS_SET.add(char);
         }
 
+        col += 1;
         break;
       }
     }
 
     if (erroFlag) {
-      throw new Error(`Caractere invalido: ${char}`);
+      throw new Error(`Caractere inválido, col ${col}: '${char}'`);
     }
   }
 

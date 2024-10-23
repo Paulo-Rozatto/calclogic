@@ -33,11 +33,16 @@ function insertBracket() {
 
 function onEnter() {
   const input = displayText.innerText;
-  const { tokens, vars } = tokenize(input);
-  const ast = parse(tokens);
-  const { result, varsMap } = solve(ast, vars);
-  console.log(result);
-  buildTable(input, vars, varsMap, result);
+
+  try {
+    const { tokens, vars } = tokenize(input);
+    const ast = parse(tokens);
+    const { result, varsMap } = solve(ast, vars);
+    buildTable(input, vars, varsMap, result);
+  } catch (e) {
+    displayMessage.innerText = e.message;
+    displayMessage.title = e.message;
+  }
 }
 
 function addCol(fragment, text) {

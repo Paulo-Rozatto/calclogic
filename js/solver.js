@@ -60,7 +60,8 @@ function evaluate(el) {
         ? evaluate(middle)
         : biop(middle.symbol, evaluate(left), evaluate(right));
     default:
-      console.error("Operação errada!", el);
+      console.error("Operação inválida!", el);
+      throw new Error(`Operação '${el.symbol}' inválida!`);
   }
 }
 

@@ -177,7 +177,10 @@ export function parse(input) {
     action = SLR_TABLE[tokens[0].symbol][index];
 
     if (!action) {
-      console.error(`Error de parser: ${tokens[0].symbol}::${tokens[0].char}`);
+      const message = tokens[0].char
+        ? `${tokens[0].col}: Token '${tokens[0].char}' inválido.`
+        : `${input.length + 1}: Esperava-se um token.`;
+      throw new Error(`Erro de Sintaxe, col ${message} `);
     }
 
     action();
