@@ -50,5 +50,9 @@ export function tokenize(text) {
       throw new Error(`Caractere invalido: ${char}`);
     }
   }
-  return { tokens, varsSet: VARS_SET };
+
+  const vars = Array.from(VARS_SET);
+  vars.sort();
+
+  return { tokens, vars };
 }

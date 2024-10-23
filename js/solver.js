@@ -7,9 +7,8 @@ const BIOPS = {
 
 let varsMap = null;
 
-function initVars(varsSet) {
-  const size = 2 ** varsSet.size;
-  const vars = Array.from(varsSet);
+function initVars(vars) {
+  const size = 2 ** vars.length;
   vars.sort();
 
   varsMap = {};
@@ -67,5 +66,5 @@ function evaluate(el) {
 
 export function solve(ast, varsSet) {
   initVars(varsSet);
-  return evaluate(ast[0]);
+  return { result: evaluate(ast[0]), varsMap };
 }

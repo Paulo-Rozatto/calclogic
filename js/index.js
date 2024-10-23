@@ -32,11 +32,43 @@ function insertBracket() {
 }
 
 function onEnter() {
-  const { tokens, varsSet } = tokenize(displayText.innerText);
-  console.log(tokens);
+  const input = displayText.innerText;
+  const { tokens, vars } = tokenize(input);
   const ast = parse(tokens);
-  const result = solve(ast, varsSet);
+  const { result, varsMap } = solve(ast, vars);
   console.log(result);
+  buildTable(input, vars, varsMap, result);
+}
+
+function addCol(fragment, text) {
+  const div = document.createElement("div");
+  div.className = "col outcol";
+  div.innerText = text;
+  fragment.append(div);
+}
+
+function buildTable(proposition, varsNames, varsMap, result) {
+  const fragment = new DocumentFragment();
+
+  // Header
+  for (const varName of varsNames) {
+    addCol(fragment, varName);
+  }
+  addCol(fragment, proposition);
+
+  // Body
+  for (let i = 0; i < result.length; i++) {
+    for (const varName of varsNames) {
+      addCol(fragment, varsMap[varName][i] ? "V" : "F");
+    }
+    addCol(fragment, result[i] ? "V" : "F");
+  }
+
+  output.innerHTML = "";
+  output.append(fragment);
+  output.style.gridTemplateColumns = `repeat(${varsNames.length + 1}, 1fr)`;
+  output.style.display = "grid";
+  output.scrollIntoView(true);
 }
 
 document
