@@ -169,3 +169,22 @@ header {
     text-align: center;
   }
 }
+
+.node {
+  fill: black;
+  stroke: blue;
+  stroke-width: 1.5;
+}
+
+.label {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  text-anchor: middle;
+  fill: white;
+  /* Change text color to white */
+}
+
+.line {
+  stroke: black;
+  stroke-width: 1;
+}

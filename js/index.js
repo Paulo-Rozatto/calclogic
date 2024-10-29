@@ -1,6 +1,7 @@
 import { solve } from "./solver.js";
 import { tokenize } from "./lexer.js";
 import { parse } from "./parser.js";
+import { drawTree } from "./tree.js";
 
 const displayText = document.querySelector("#display-text");
 const displayMessage = document.querySelector("#display-message");
@@ -39,6 +40,7 @@ function onEnter() {
     const ast = parse(tokens);
     const { result, varsMap } = solve(ast, vars);
     buildTable(input, vars, varsMap, result);
+    drawTree(ast[0])
   } catch (e) {
     displayMessage.innerText = e.message;
     displayMessage.title = e.message;
